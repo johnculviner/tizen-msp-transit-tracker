@@ -1,0 +1,76 @@
+.stop {
+
+  .full-width {
+    padding: 5px 10px;
+    display: inline-block;
+    color: white;
+    font-size: 1.2em;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    border: 0;
+    font-weight: bold;
+    background-color: #005b79;
+  }
+
+  .route-info {
+    top: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 1.4em;
+  }
+
+  .position-indicator {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    background-color: #666666;
+    margin-right: 10px;
+    border-radius: 5px;
+  }
+
+  .active {
+    background-color: white;
+  }
+
+  .refresh-stop {
+    position: fixed;
+    padding-bottom: 15px;
+    padding-top: 10px;
+    bottom: 0;
+    left: 0;
+  }
+
+  .data {
+    padding-top: 70px;
+    padding-bottom: 40px;
+    font-size: 1.2em;
+
+    .cog {
+      font-size: 6em;
+      position: absolute;
+      width: 100%;
+      text-align: center;
+    }
+
+    .no-busses {
+      color: red;
+    }
+
+    .time {
+      color: white;
+      font-size: 1em;
+      text-align: left;
+      list-style: none;
+      margin-bottom: 15px;
+      clear: both;
+      padding-left: 10px;
+
+      .route {
+        background-color: green;
+        padding: 2px 5px;
+      }
+    }
+  }
+
+}

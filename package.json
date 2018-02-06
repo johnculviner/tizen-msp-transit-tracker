@@ -1,0 +1,48 @@
+{
+  "private": true,
+  "name": "tizen-msp-transit-tracker",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
+    "build": "preact build --no-prerender --service-worker false",
+    "serve": "preact build && preact serve",
+    "dev": "preact watch",
+    "lint": "eslint src",
+    "emulator": "npm run build && ./tizen/emulator.sh",
+    "s3": "npm run build && ./tizen/s3.sh"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-synacor",
+    "rules": {
+      "brace-style": 0,
+      "radix": 0,
+      "react/sort-comp": 0,
+      "semi": [
+        "error",
+        "never"
+      ],
+      "indent": [
+        "error",
+        2
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "build/*"
+  ],
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-synacor": "^2.0.2",
+    "identity-obj-proxy": "^3.0.0",
+    "if-env": "^1.0.0",
+    "node-sass": "4.7.2",
+    "preact-cli": "^2.1.0",
+    "preact-render-spy": "^1.2.1",
+    "sass-loader": "6.0.6"
+  },
+  "dependencies": {
+    "lodash.get": "4.4.2",
+    "preact": "^8.2.6"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "tizen-msp-transit-tracker",
+  "short_name": "tizen-msp-transit-tracker",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000",
+  "theme_color": "#673ab8"
+}

@@ -1,0 +1,46 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 360px;
+  width: 360px;
+  font-family: sans-serif;
+
+  #app {
+    background-color: #000;
+    color: #fff;
+    position: relative;
+    border-radius: 50%;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    height: 100%;
+
+    .faux-bezel {
+      position: absolute;
+      clear: both;
+      width: 100%;
+      top: 60px;
+
+      button {
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .cw {
+        float: right;
+      }
+      .ccw {
+        float: left;
+      }
+    }
+  }
+
+  path {
+    fill: transparent;
+  }
+
+  text {
+    fill: #FF9800;
+  }
+}
