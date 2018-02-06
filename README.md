@@ -8,6 +8,8 @@ Some project technical goals:
 Personal Goals:
 - Stop missing the bus and know when to run to possibly catch the bus
 
+## Action Shot
+![action shot](https://raw.githubusercontent.com/johnculviner/tizen-msp-transit-tracker/master/action-shot.jpg)
 
 ## Doin stuff
 
