@@ -25,16 +25,16 @@ export PATH="$HOME/tizen-studio/tools/emulator/bin:$PATH"
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:8080 in a web browser
 # (looks like a pretend watch minus the Tizen APIs but hey you can debug and live reload!)
 npm run dev
 
-# build for production with minification
-npm run build
+# run the app in the tizen emulator with hot module reloading
+npm run hmr-emulator
 
-# run the tizen emulator (currently hardcoded to my emulator)
+# build / deploy to a s3 tizen wearable (currently hardcoded to my watches IP on my home network)
+npm run device
+
+# run the app in the tizen emulator
 npm run emulator
-
-# deploy to a s3 tizen wearable (currently hardcoded to my watches IP on my home network)
-npm run s3
 ```
