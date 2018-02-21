@@ -4,16 +4,9 @@ node_modules
 *.lock
 
 package-lock.json
-/tizen/*
+/tizen-build
 !/tizen/*.sh
 !/tizen/*project
-!/tizen/config.xml
+!/tizen/config.xml.ejs
 !/tizen/icon.png
 !/tizen/.settings
-
-/tizen/.buildResult/
-/tizen/.manifest.tmp
-/tizen/signature1.xml
-/tizen/author-signature.xml
-/tizen/BusTracker.wgt
-/tizen/index.html

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "tizen-msp-transit-tracker",
+  "name": "TransitTracker",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -9,8 +9,9 @@
     "serve": "preact build && preact serve",
     "dev": "preact watch",
     "lint": "eslint src",
-    "emulator": "npm run build && ./tizen/emulator.sh",
-    "s3": "npm run build && ./tizen/s3.sh"
+    "emulator": "npm run build && node ./tizen-build.js emulator",
+    "hmr-emulator": "preact watch & node ./tizen-build.js hmr-emulator",
+    "device": "npm run build && node ./tizen-build.js device"
   },
   "eslintConfig": {
     "extends": "eslint-config-synacor",
@@ -28,6 +29,10 @@
       ]
     }
   },
+  "tizen": {
+    "projectId": "uk1A2xnaIo",
+    "signatureName": "JohnCulviner"
+  },
   "eslintIgnore": [
     "build/*"
   ],
@@ -36,6 +41,7 @@
     "eslint-config-synacor": "^2.0.2",
     "identity-obj-proxy": "^3.0.0",
     "if-env": "^1.0.0",
+    "lodash": "4.17.5",
     "node-sass": "4.7.2",
     "preact-cli": "^2.1.0",
     "preact-render-spy": "^1.2.1",
