@@ -31,7 +31,8 @@
   },
   "tizen": {
     "projectId": "uk1A2xnaIo",
-    "signatureName": "JohnCulviner"
+    "signatureName": "JohnCulviner",
+    "deviceIp": "192.168.50.89:26101"
   },
   "eslintIgnore": [
     "build/*"

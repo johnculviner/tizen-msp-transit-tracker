@@ -51,7 +51,7 @@ function hmrBuild() {
 }
 
 function deviceBuild() {
-  runShellStep('Connect to your device on the network...', `sdb connect 192.168.50.89:26101`) //todo unhardcode or prompt for device IP?
+  runShellStep(`Connect to your device on the network ${packageJson.tizen.deviceIp}...`, `sdb connect ${packageJson.tizen.deviceIp}`)
   buildDeployCore()
 }
 
