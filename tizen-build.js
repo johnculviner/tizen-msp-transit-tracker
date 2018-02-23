@@ -33,7 +33,10 @@ function emulatorBuild(includePreactBuild = true) {
   }
   buildDeployCore(includePreactBuild)
   runShellStep('open the app', `tizen run -p ${packageJson.tizen.projectId}`)
-  runShellStep('sdb console output...\n', 'sdb dlog ConsoleMessage:V')
+  console.log('sdb console output...')
+  const proc = cp.spawn('sdb', ['dlog', 'ConsoleMessage:V'])
+  proc.stdout.pipe(process.stdout)
+  proc.stderr.pipe(process.stderr)
 }
 
 function hmrBuild() {
