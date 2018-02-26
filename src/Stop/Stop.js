@@ -1,5 +1,7 @@
 import { Component } from 'preact'
 import util from '../util'
+import getJson from '../getJson'
+
 require('./stop.scss')
 
 export default class Stop extends Component {
@@ -28,20 +30,17 @@ export default class Stop extends Component {
     const { stop } = this.props
     this.setState({ isRefreshing: true, lastUpdate: new Date() })
 
-    fetch(`http://svc.metrotransit.org/NexTrip/${stop.number}?format=json`)
-      .then(resp => resp.json())
-      .then(obj => {
-        const times = obj
-          .filter(x => x.Route === stop.route)
-          .map(x => ({
-            route: x.Route + x.Terminal,
-            scheduledDeparture: util.get12HourTime(new Date(parseInt(/\((.*?)-/.exec(x.DepartureTime)[1]))),
-            nextTripText: x.DepartureText,
-            distanceMiles: x.VehicleLatitude ? util.latLongDistance(x.VehicleLatitude, x.VehicleLongitude, stop.lat, stop.lon).toFixed(2) : null
-          }))
-
-        this.setState({ isRefreshing: false, times })
-      })
+    getJson(`http://svc.metrotransit.org/NexTrip/${stop.number}?format=json`, obj => {
+      const times = obj
+        .filter(x => x.Route === stop.route)
+        .map(x => ({
+          route: x.Route + x.Terminal,
+          scheduledDeparture: util.get12HourTime(new Date(parseInt(/\((.*?)-/.exec(x.DepartureTime)[1]))),
+          nextTripText: x.DepartureText,
+          distanceMiles: x.VehicleLatitude ? util.latLongDistance(x.VehicleLatitude, x.VehicleLongitude, stop.lat, stop.lon).toFixed(2) : null
+        }))
+      this.setState({ isRefreshing: false, times })
+    })
   }
 
   componentWillUnmount() {

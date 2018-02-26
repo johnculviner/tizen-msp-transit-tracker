@@ -1,7 +1,7 @@
 const cp = require('child_process')
 const process = require('process')
 const fs = require('fs')
-const packageJson = require('./package.json')
+const tizenConfig = require('./tizen.config.js')
 const _ = require('lodash')
 
 // handle input and run appropriate script
@@ -32,11 +32,11 @@ function emulatorBuild(includePreactBuild = true) {
     runShellStep(`Waiting for ${emulator} to come up for 10 seconds...`, 'sleep 10')
   }
   buildDeployCore(includePreactBuild)
-  runShellStep('open the app', `tizen run -p ${packageJson.tizen.projectId}`)
+  runShellStep('open the app', `tizen run -p ${tizenConfig.projectId}`)
   console.log('sdb console output...')
   const proc = cp.spawn('sdb', ['dlog', 'ConsoleMessage:V'])
   proc.stdout.pipe(process.stdout)
-  proc.stderr.pipe(process.stderr)
+  proc.stderr.pipe(process.stdout)
 }
 
 function hmrBuild() {
@@ -54,7 +54,7 @@ function hmrBuild() {
 }
 
 function deviceBuild() {
-  runShellStep(`Connect to your device on the network ${packageJson.tizen.deviceIp}...`, `sdb connect ${packageJson.tizen.deviceIp}`)
+  runShellStep(`Connect to your device on the network ${tizenConfig.deviceIp}...`, `sdb connect ${tizenConfig.deviceIp}`)
   buildDeployCore()
 }
 
@@ -67,22 +67,25 @@ function buildDeployCore(includePreactBuild = true) {
     runShellStep('Making build output folder...', 'mkdir tizen-build')
     runShellStep('Including preact build output...', 'cp ./build/* ./tizen-build')
     runShellStep('Remove un-necessary files from preact build output...', 'rm favicon.ico *.map sw.js', tizenBuildCwd)
+    runShellStep('Remove un-necessary files from preact build output...', 'rm polyfills.*', tizenBuildCwd)
   }
 
   runShellStep('Copy in tizen stuff...', 'cp ./tizen/* ./tizen-build')
 
   //template transforms
-  runStep('Transform .project.ejs > .project', () => transformTizenTemplate('.project.ejs'))
-  runStep('Transform config.xml.ejs > config.xml', () => transformTizenTemplate('config.xml.ejs'))
+  const projectName = tizenConfig.displayName.replace(/([^a-z0-9]+)/gi, '') // name can't have spaces but this is how you set the name in the watch launcher. hack it. argh.
+  runStep('Transform .project.ejs > .project', () => transformTizenTemplate('.project.ejs', projectName))
+  runStep('Transform config.xml.ejs > config.xml', () => transformTizenTemplate('config.xml.ejs', projectName))
+  fs.unlinkSync(`./tizen-build/config.xml.ejs`)
 
-  runShellStep('Build tizen web project', 'tizen build-web', tizenBuildCwd)
-  runShellStep('Package tizen project using specified signature', `tizen package -t wgt -s ${packageJson.tizen.signatureName}`, tizenBuildCwd)
-  runShellStep('Install package on device', `tizen install -n ${packageJson.name}.wgt`, tizenBuildCwd)
+  runShellStep('Package tizen project using specified signature', `tizen package -t wgt -s ${tizenConfig.signatureName}`, tizenBuildCwd)
+  runShellStep('Fixing package output filename for cli tools', `mv '${tizenConfig.displayName}.wgt' ${projectName}.wgt`, tizenBuildCwd) // cli tools don't seem to support spaces
+  runShellStep('Install package on device', `tizen install -n ${projectName}.wgt`, tizenBuildCwd)
 }
 
 
-function transformTizenTemplate(fileName) {
-  const args = Object.assign({ projectName: packageJson.name }, packageJson.tizen)
+function transformTizenTemplate(fileName, projectName) {
+  const args = Object.assign({ projectName }, tizenConfig)
   const output = _.template(fs.readFileSync(`./tizen/${fileName}`).toString())(args)
   fs.writeFileSync(`./tizen-build/${fileName.replace('.ejs', '')}`, output)
 }
@@ -105,8 +108,6 @@ function runStep(whatsHappeningText, actionFunc) {
   if (failureReason) {
     console.log()
     console.log(` ❌  ${failureReason}`)
-    console.log()
-    console.log('\x1b[31mAborting beta release due to above error(s)\x1b[0m')
     process.exit(1)
   }
   console.log(' ✅')
